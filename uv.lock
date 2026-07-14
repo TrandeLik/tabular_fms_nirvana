@@ -2,17 +2,17 @@ version = 1
 revision = 3
 requires-python = "==3.12.9"
 resolution-markers = [
-    "sys_platform == 'win32' and extra != 'group-11-gfraud-prod-dev' and extra == 'group-11-gfraud-prod-yandex'",
-    "sys_platform == 'emscripten' and extra != 'group-11-gfraud-prod-dev' and extra == 'group-11-gfraud-prod-yandex'",
-    "sys_platform != 'emscripten' and sys_platform != 'win32' and extra != 'group-11-gfraud-prod-dev' and extra == 'group-11-gfraud-prod-yandex'",
-    "extra == 'group-11-gfraud-prod-dev' and extra != 'group-11-gfraud-prod-yandex'",
-    "sys_platform == 'win32' and extra != 'group-11-gfraud-prod-dev' and extra != 'group-11-gfraud-prod-yandex'",
-    "sys_platform == 'emscripten' and extra != 'group-11-gfraud-prod-dev' and extra != 'group-11-gfraud-prod-yandex'",
-    "sys_platform != 'emscripten' and sys_platform != 'win32' and extra != 'group-11-gfraud-prod-dev' and extra != 'group-11-gfraud-prod-yandex'",
+    "sys_platform == 'win32' and extra != 'group-10-tabfm-prod-dev' and extra == 'group-10-tabfm-prod-yandex'",
+    "sys_platform == 'emscripten' and extra != 'group-10-tabfm-prod-dev' and extra == 'group-10-tabfm-prod-yandex'",
+    "sys_platform != 'emscripten' and sys_platform != 'win32' and extra != 'group-10-tabfm-prod-dev' and extra == 'group-10-tabfm-prod-yandex'",
+    "extra == 'group-10-tabfm-prod-dev' and extra != 'group-10-tabfm-prod-yandex'",
+    "sys_platform == 'win32' and extra != 'group-10-tabfm-prod-dev' and extra != 'group-10-tabfm-prod-yandex'",
+    "sys_platform == 'emscripten' and extra != 'group-10-tabfm-prod-dev' and extra != 'group-10-tabfm-prod-yandex'",
+    "sys_platform != 'emscripten' and sys_platform != 'win32' and extra != 'group-10-tabfm-prod-dev' and extra != 'group-10-tabfm-prod-yandex'",
 ]
 conflicts = [[
-    { package = "gfraud-prod", group = "dev" },
-    { package = "gfraud-prod", group = "yandex" },
+    { package = "tabfm-prod", group = "dev" },
+    { package = "tabfm-prod", group = "yandex" },
 ]]
 
 [[package]]
@@ -305,8 +305,8 @@ dependencies = [
     { name = "graphviz" },
     { name = "matplotlib" },
     { name = "numpy" },
-    { name = "pandas", version = "2.3.3", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-11-gfraud-prod-dev'" },
-    { name = "pandas", version = "3.0.2", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-11-gfraud-prod-yandex' or extra != 'group-11-gfraud-prod-dev'" },
+    { name = "pandas", version = "2.3.3", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-10-tabfm-prod-dev'" },
+    { name = "pandas", version = "3.0.2", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-10-tabfm-prod-yandex' or extra != 'group-10-tabfm-prod-dev'" },
     { name = "plotly" },
     { name = "scipy" },
     { name = "six" },
@@ -411,7 +411,7 @@ name = "colorlog"
 version = "6.10.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "colorama", marker = "sys_platform == 'win32' or (extra == 'group-11-gfraud-prod-dev' and extra == 'group-11-gfraud-prod-yandex')" },
+    { name = "colorama", marker = "sys_platform == 'win32' or (extra == 'group-10-tabfm-prod-dev' and extra == 'group-10-tabfm-prod-yandex')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/a2/61/f083b5ac52e505dfc1c624eafbf8c7589a0d7f32daa398d2e7590efa5fda/colorlog-6.10.1.tar.gz", hash = "sha256:eb4ae5cb65fe7fec7773c2306061a8e63e02efc2c72eba9d27b0fa23c94f1321", size = 17162, upload-time = "2025-10-16T16:14:11.978Z" }
 wheels = [
@@ -546,13 +546,13 @@ dependencies = [
     { name = "networkx" },
     { name = "numpy" },
     { name = "packaging" },
-    { name = "pandas", version = "2.3.3", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-11-gfraud-prod-dev'" },
-    { name = "pandas", version = "3.0.2", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-11-gfraud-prod-yandex' or extra != 'group-11-gfraud-prod-dev'" },
+    { name = "pandas", version = "2.3.3", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-10-tabfm-prod-dev'" },
+    { name = "pandas", version = "3.0.2", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-10-tabfm-prod-yandex' or extra != 'group-10-tabfm-prod-dev'" },
     { name = "psutil" },
     { name = "pydantic" },
     { name = "pyyaml" },
-    { name = "requests", version = "2.29.0", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-11-gfraud-prod-yandex'" },
-    { name = "requests", version = "2.33.1", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-11-gfraud-prod-dev' or extra != 'group-11-gfraud-prod-yandex'" },
+    { name = "requests", version = "2.29.0", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-10-tabfm-prod-yandex'" },
+    { name = "requests", version = "2.33.1", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-10-tabfm-prod-dev' or extra != 'group-10-tabfm-prod-yandex'" },
     { name = "scipy" },
     { name = "torch" },
     { name = "tqdm" },
@@ -721,149 +721,6 @@ wheels = [
 ]
 
 [[package]]
-name = "gfraud-prod"
-version = "0.0.1"
-source = { editable = "." }
-dependencies = [
-    { name = "catboost" },
-    { name = "delu" },
-    { name = "dgl" },
-    { name = "einops" },
-    { name = "einx" },
-    { name = "flash-attn" },
-    { name = "huggingface-hub", extra = ["torch"] },
-    { name = "lightgbm" },
-    { name = "loguru" },
-    { name = "loralib" },
-    { name = "numpy" },
-    { name = "ogb" },
-    { name = "omegaconf" },
-    { name = "optuna" },
-    { name = "pyyaml" },
-    { name = "rtdl-num-embeddings" },
-    { name = "rtdl-revisiting-models" },
-    { name = "scikit-learn" },
-    { name = "scipy" },
-    { name = "tensorboard" },
-    { name = "tomli-w" },
-    { name = "torch" },
-    { name = "torch-geometric" },
-    { name = "tqdm" },
-    { name = "transformers" },
-    { name = "xgboost" },
-    { name = "yandex-underdeep" },
-]
-
-[package.dev-dependencies]
-dev = [
-    { name = "bokeh" },
-    { name = "holoviews" },
-    { name = "hvplot" },
-    { name = "ipdb" },
-    { name = "ipython" },
-    { name = "ipywidgets" },
-    { name = "jupyterlab" },
-    { name = "matplotlib" },
-    { name = "mypy" },
-    { name = "nbclassic" },
-    { name = "notebook" },
-    { name = "nvitop" },
-    { name = "pandas", version = "2.3.3", source = { registry = "https://pypi.org/simple" } },
-    { name = "panel" },
-    { name = "plotnine" },
-    { name = "polars" },
-    { name = "pudb" },
-    { name = "pytest", version = "8.4.2", source = { registry = "https://pypi.org/simple" } },
-    { name = "ruff" },
-    { name = "seaborn" },
-    { name = "setuptools" },
-    { name = "tabulate" },
-]
-yandex = [
-    { name = "cyclopts" },
-    { name = "nirvana-api" },
-    { name = "nirvana-context" },
-    { name = "vh3" },
-    { name = "yandex-snooper" },
-    { name = "yandex-yt" },
-    { name = "yandex-yt-yson-bindings" },
-]
-yandex-nirvana-dl = [
-    { name = "nirvana-dl" },
-    { name = "yandex-global-state-controller" },
-]
-
-[package.metadata]
-requires-dist = [
-    { name = "catboost", specifier = "==1.2.10" },
-    { name = "delu", specifier = "==0.0.26" },
-    { name = "dgl", specifier = "==2.4.0", index = "https://data.dgl.ai/wheels/torch-2.4/cu124/repo.html" },
-    { name = "einops", specifier = "==0.8.1" },
-    { name = "einx", specifier = "==0.4.2" },
-    { name = "flash-attn", specifier = "==2.8.3" },
-    { name = "huggingface-hub", extras = ["torch"], specifier = "==0.36.2" },
-    { name = "lightgbm", specifier = "==4.3.0" },
-    { name = "loguru", specifier = "==0.7.3" },
-    { name = "loralib", specifier = "==0.1.2" },
-    { name = "numpy", specifier = "==2.2.4" },
-    { name = "ogb", specifier = "==1.3.6" },
-    { name = "omegaconf", specifier = "==2.3.0" },
-    { name = "optuna", specifier = "==4.2.1" },
-    { name = "pyyaml", specifier = "==6.0.2" },
-    { name = "rtdl-num-embeddings", specifier = "==0.0.11" },
-    { name = "rtdl-revisiting-models", specifier = "==0.0.2" },
-    { name = "scikit-learn", specifier = "==1.6.1" },
-    { name = "scipy", specifier = "==1.15.2" },
-    { name = "tensorboard", specifier = "==2.19.0" },
-    { name = "tomli-w", specifier = "==1.2.0" },
-    { name = "torch", specifier = "==2.4.0" },
-    { name = "torch-geometric", specifier = "==2.6.1" },
-    { name = "tqdm", specifier = "==4.67.1" },
-    { name = "transformers", specifier = "==4.57.6" },
-    { name = "xgboost", specifier = "==3.2.0" },
-    { name = "yandex-underdeep", index = "https://pypi.yandex-team.ru/simple" },
-]
-
-[package.metadata.requires-dev]
-dev = [
-    { name = "bokeh", specifier = ">=3.7.3,<4" },
-    { name = "holoviews", specifier = ">=1.20.2,<2" },
-    { name = "hvplot", specifier = ">=0.11.3,<1" },
-    { name = "ipdb", specifier = ">=0.13.13,<1" },
-    { name = "ipython", specifier = ">=9.3.0,<10" },
-    { name = "ipywidgets", specifier = ">=8.1.7,<9" },
-    { name = "jupyterlab", specifier = ">=4.4.3,<5" },
-    { name = "matplotlib", specifier = ">=3.10.3,<4" },
-    { name = "mypy", specifier = ">=1.16.1,<2" },
-    { name = "nbclassic", specifier = ">=1.3.1,<2" },
-    { name = "notebook", specifier = ">=7.4.3,<8" },
-    { name = "nvitop", specifier = ">=1.5.1" },
-    { name = "pandas", specifier = ">=2.3.0,<3" },
-    { name = "panel", specifier = ">=1.7.1,<2" },
-    { name = "plotnine", specifier = ">=0.14.5,<1" },
-    { name = "polars", specifier = ">=1.30.0,<2" },
-    { name = "pudb", specifier = ">=2025.1" },
-    { name = "pytest", specifier = ">=8.4.0,<9" },
-    { name = "ruff", specifier = ">=0.12.0,<1" },
-    { name = "seaborn", specifier = ">=0.13.2,<1" },
-    { name = "setuptools", specifier = ">=80.9.0" },
-    { name = "tabulate", specifier = ">=0.9.0" },
-]
-yandex = [
-    { name = "cyclopts", specifier = "==3.12.0" },
-    { name = "nirvana-api", specifier = "==2.5.0.post15825108", index = "https://pypi.yandex-team.ru/simple" },
-    { name = "nirvana-context", index = "https://pypi.yandex-team.ru/simple" },
-    { name = "vh3", specifier = "==1.0.0.dev16116338", index = "https://pypi.yandex-team.ru/simple" },
-    { name = "yandex-snooper", index = "https://pypi.yandex-team.ru/simple" },
-    { name = "yandex-yt", specifier = "==0.15.4", index = "https://pypi.yandex-team.ru/simple" },
-    { name = "yandex-yt-yson-bindings", index = "https://pypi.yandex-team.ru/simple" },
-]
-yandex-nirvana-dl = [
-    { name = "nirvana-dl", specifier = "==7135262", index = "https://pypi.yandex-team.ru/simple" },
-    { name = "yandex-global-state-controller", specifier = "==1.2.1", index = "https://pypi.yandex-team.ru/simple" },
-]
-
-[[package]]
 name = "graphviz"
 version = "0.21"
 source = { registry = "https://pypi.org/simple" }
@@ -992,11 +849,11 @@ source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "filelock" },
     { name = "fsspec" },
-    { name = "hf-xet", marker = "platform_machine == 'aarch64' or platform_machine == 'amd64' or platform_machine == 'arm64' or platform_machine == 'x86_64' or (extra == 'group-11-gfraud-prod-dev' and extra == 'group-11-gfraud-prod-yandex')" },
+    { name = "hf-xet", marker = "platform_machine == 'aarch64' or platform_machine == 'amd64' or platform_machine == 'arm64' or platform_machine == 'x86_64' or (extra == 'group-10-tabfm-prod-dev' and extra == 'group-10-tabfm-prod-yandex')" },
     { name = "packaging" },
     { name = "pyyaml" },
-    { name = "requests", version = "2.29.0", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-11-gfraud-prod-yandex'" },
-    { name = "requests", version = "2.33.1", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-11-gfraud-prod-dev' or extra != 'group-11-gfraud-prod-yandex'" },
+    { name = "requests", version = "2.29.0", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-10-tabfm-prod-yandex'" },
+    { name = "requests", version = "2.33.1", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-10-tabfm-prod-dev' or extra != 'group-10-tabfm-prod-yandex'" },
     { name = "tqdm" },
     { name = "typing-extensions" },
 ]
@@ -1280,7 +1137,7 @@ name = "jupyter-events"
 version = "0.12.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "jsonschema", extra = ["format-nongpl"], marker = "extra == 'group-11-gfraud-prod-dev'" },
+    { name = "jsonschema", extra = ["format-nongpl"], marker = "extra == 'group-10-tabfm-prod-dev'" },
     { name = "packaging" },
     { name = "python-json-logger" },
     { name = "pyyaml" },
@@ -1507,8 +1364,8 @@ name = "loguru"
 version = "0.7.3"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "colorama", marker = "sys_platform == 'win32' or (extra == 'group-11-gfraud-prod-dev' and extra == 'group-11-gfraud-prod-yandex')" },
-    { name = "win32-setctime", marker = "sys_platform == 'win32' or (extra == 'group-11-gfraud-prod-dev' and extra == 'group-11-gfraud-prod-yandex')" },
+    { name = "colorama", marker = "sys_platform == 'win32' or (extra == 'group-10-tabfm-prod-dev' and extra == 'group-10-tabfm-prod-yandex')" },
+    { name = "win32-setctime", marker = "sys_platform == 'win32' or (extra == 'group-10-tabfm-prod-dev' and extra == 'group-10-tabfm-prod-yandex')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/3a/05/a1dae3dffd1116099471c643b8924f5aa6524411dc6c63fdae648c4f1aca/loguru-0.7.3.tar.gz", hash = "sha256:19480589e77d47b8d85b2c827ad95d49bf31b0dcde16593892eb51dd18706eb6", size = 63559, upload-time = "2024-12-06T11:20:56.608Z" }
 wheels = [
@@ -1771,7 +1628,7 @@ version = "7.17.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "beautifulsoup4" },
-    { name = "bleach", extra = ["css"], marker = "extra == 'group-11-gfraud-prod-dev'" },
+    { name = "bleach", extra = ["css"], marker = "extra == 'group-10-tabfm-prod-dev'" },
     { name = "defusedxml" },
     { name = "jinja2" },
     { name = "jupyter-core" },
@@ -1832,7 +1689,7 @@ dependencies = [
     { name = "requests", version = "2.29.0", source = { registry = "https://pypi.org/simple" } },
     { name = "six" },
 ]
-sdist = { url = "https://pypi.yandex-team.ru/simple/download/nirvana-api/1560893/nirvana-api-2.5.0.post15825108.tar.gz", hash = "md5:c813e0acda6234979a5a016562c6a4b3" }
+sdist = { url = "https://pypi.yandex-team.ru/simple/download/nirvana-api/1560893/nirvana-api-2.5.0.post15825108.tar.gz", hash = "sha256:56374fdea0aac130be046846f88f301055db33f8862e594d16819c4565dd8a61" }
 
 [[package]]
 name = "nirvana-context"
@@ -1943,7 +1800,7 @@ name = "nvidia-cudnn-cu12"
 version = "9.1.0.70"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "nvidia-cublas-cu12", marker = "(sys_platform != 'emscripten' and sys_platform != 'win32') or (sys_platform == 'emscripten' and extra == 'group-11-gfraud-prod-dev') or (sys_platform == 'win32' and extra == 'group-11-gfraud-prod-dev')" },
+    { name = "nvidia-cublas-cu12" },
 ]
 wheels = [
     { url = "https://files.pythonhosted.org/packages/9f/fd/713452cd72343f682b1c7b9321e23829f00b842ceaedcda96e742ea0b0b3/nvidia_cudnn_cu12-9.1.0.70-py3-none-manylinux2014_x86_64.whl", hash = "sha256:165764f44ef8c61fcdfdfdbe769d687e06374059fbb388b6c89ecb0e28793a6f", size = 664752741, upload-time = "2024-04-22T15:24:15.253Z" },
@@ -1973,9 +1830,9 @@ name = "nvidia-cusolver-cu12"
 version = "11.4.5.107"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "nvidia-cublas-cu12", marker = "(sys_platform != 'emscripten' and sys_platform != 'win32') or (sys_platform == 'emscripten' and extra == 'group-11-gfraud-prod-dev') or (sys_platform == 'win32' and extra == 'group-11-gfraud-prod-dev')" },
-    { name = "nvidia-cusparse-cu12", marker = "(sys_platform != 'emscripten' and sys_platform != 'win32') or (sys_platform == 'emscripten' and extra == 'group-11-gfraud-prod-dev') or (sys_platform == 'win32' and extra == 'group-11-gfraud-prod-dev')" },
-    { name = "nvidia-nvjitlink-cu12", marker = "(sys_platform != 'emscripten' and sys_platform != 'win32') or (sys_platform == 'emscripten' and extra == 'group-11-gfraud-prod-dev') or (sys_platform == 'win32' and extra == 'group-11-gfraud-prod-dev')" },
+    { name = "nvidia-cublas-cu12" },
+    { name = "nvidia-cusparse-cu12" },
+    { name = "nvidia-nvjitlink-cu12" },
 ]
 wheels = [
     { url = "https://files.pythonhosted.org/packages/bc/1d/8de1e5c67099015c834315e333911273a8c6aaba78923dd1d1e25fc5f217/nvidia_cusolver_cu12-11.4.5.107-py3-none-manylinux1_x86_64.whl", hash = "sha256:8a7ec542f0412294b15072fa7dab71d31334014a69f953004ea7a118206fe0dd", size = 124161928, upload-time = "2023-04-19T15:51:25.781Z" },
@@ -1987,7 +1844,7 @@ name = "nvidia-cusparse-cu12"
 version = "12.1.0.106"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "nvidia-nvjitlink-cu12", marker = "(sys_platform != 'emscripten' and sys_platform != 'win32') or (sys_platform == 'emscripten' and extra == 'group-11-gfraud-prod-dev') or (sys_platform == 'win32' and extra == 'group-11-gfraud-prod-dev')" },
+    { name = "nvidia-nvjitlink-cu12" },
 ]
 wheels = [
     { url = "https://files.pythonhosted.org/packages/65/5b/cfaeebf25cd9fdec14338ccb16f6b2c4c7fa9163aefcf057d86b9cc248bb/nvidia_cusparse_cu12-12.1.0.106-py3-none-manylinux1_x86_64.whl", hash = "sha256:f3b50f42cf363f86ab21f720998517a659a48131e8d538dc02f8768237bd884c", size = 195958278, upload-time = "2023-04-19T15:51:49.939Z" },
@@ -2053,8 +1910,8 @@ source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "numpy" },
     { name = "outdated" },
-    { name = "pandas", version = "2.3.3", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-11-gfraud-prod-dev'" },
-    { name = "pandas", version = "3.0.2", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-11-gfraud-prod-yandex' or extra != 'group-11-gfraud-prod-dev'" },
+    { name = "pandas", version = "2.3.3", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-10-tabfm-prod-dev'" },
+    { name = "pandas", version = "3.0.2", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-10-tabfm-prod-yandex' or extra != 'group-10-tabfm-prod-dev'" },
     { name = "scikit-learn" },
     { name = "six" },
     { name = "torch" },
@@ -2112,8 +1969,8 @@ version = "0.2.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "littleutils" },
-    { name = "requests", version = "2.29.0", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-11-gfraud-prod-yandex'" },
-    { name = "requests", version = "2.33.1", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-11-gfraud-prod-dev' or extra != 'group-11-gfraud-prod-yandex'" },
+    { name = "requests", version = "2.29.0", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-10-tabfm-prod-yandex'" },
+    { name = "requests", version = "2.33.1", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-10-tabfm-prod-dev' or extra != 'group-10-tabfm-prod-yandex'" },
     { name = "setuptools" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/e9/43/ac45b6c53fc62c99f02dbc310939d8693aa76cdf9900afe74a60febc8266/outdated-0.2.2.tar.gz", hash = "sha256:4b7fdec88e36711120d096d485fc4d5035e4e5ffbd907cf3a6ce2af43058b970", size = 9325, upload-time = "2022-10-29T10:14:01.847Z" }
@@ -2135,10 +1992,10 @@ name = "pandas"
 version = "2.3.3"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "numpy", marker = "extra == 'group-11-gfraud-prod-dev'" },
-    { name = "python-dateutil", marker = "extra == 'group-11-gfraud-prod-dev'" },
-    { name = "pytz", marker = "extra == 'group-11-gfraud-prod-dev'" },
-    { name = "tzdata", marker = "extra == 'group-11-gfraud-prod-dev'" },
+    { name = "numpy", marker = "extra == 'group-10-tabfm-prod-dev'" },
+    { name = "python-dateutil", marker = "extra == 'group-10-tabfm-prod-dev'" },
+    { name = "pytz", marker = "extra == 'group-10-tabfm-prod-dev'" },
+    { name = "tzdata", marker = "extra == 'group-10-tabfm-prod-dev'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/33/01/d40b85317f86cf08d853a4f495195c73815fdf205eef3993821720274518/pandas-2.3.3.tar.gz", hash = "sha256:e05e1af93b977f7eafa636d043f9f94c7ee3ac81af99c13508215942e64c993b", size = 4495223, upload-time = "2025-09-29T23:34:51.853Z" }
 wheels = [
@@ -2161,9 +2018,9 @@ resolution-markers = [
     "sys_platform != 'emscripten' and sys_platform != 'win32'",
 ]
 dependencies = [
-    { name = "numpy", marker = "extra == 'group-11-gfraud-prod-yandex' or extra != 'group-11-gfraud-prod-dev'" },
-    { name = "python-dateutil", marker = "extra == 'group-11-gfraud-prod-yandex' or extra != 'group-11-gfraud-prod-dev'" },
-    { name = "tzdata", marker = "(sys_platform == 'emscripten' and extra != 'group-11-gfraud-prod-dev') or (sys_platform == 'win32' and extra != 'group-11-gfraud-prod-dev') or (extra == 'group-11-gfraud-prod-dev' and extra == 'group-11-gfraud-prod-yandex')" },
+    { name = "numpy", marker = "extra == 'group-10-tabfm-prod-yandex' or extra != 'group-10-tabfm-prod-dev'" },
+    { name = "python-dateutil", marker = "extra == 'group-10-tabfm-prod-yandex' or extra != 'group-10-tabfm-prod-dev'" },
+    { name = "tzdata", marker = "(sys_platform == 'emscripten' and extra != 'group-10-tabfm-prod-dev') or (sys_platform == 'win32' and extra != 'group-10-tabfm-prod-dev') or (extra == 'group-10-tabfm-prod-dev' and extra == 'group-10-tabfm-prod-yandex')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/da/99/b342345300f13440fe9fe385c3c481e2d9a595ee3bab4d3219247ac94e9a/pandas-3.0.2.tar.gz", hash = "sha256:f4753e73e34c8d83221ba58f232433fca2748be8b18dbca02d242ed153945043", size = 4645855, upload-time = "2026-03-31T06:48:30.816Z" }
 wheels = [
@@ -2752,10 +2609,10 @@ resolution-markers = [
     "sys_platform != 'emscripten' and sys_platform != 'win32'",
 ]
 dependencies = [
-    { name = "certifi", marker = "extra == 'group-11-gfraud-prod-yandex'" },
-    { name = "charset-normalizer", marker = "extra == 'group-11-gfraud-prod-yandex'" },
-    { name = "idna", marker = "extra == 'group-11-gfraud-prod-yandex'" },
-    { name = "urllib3", marker = "extra == 'group-11-gfraud-prod-yandex'" },
+    { name = "certifi", marker = "extra == 'group-10-tabfm-prod-yandex'" },
+    { name = "charset-normalizer", marker = "extra == 'group-10-tabfm-prod-yandex'" },
+    { name = "idna", marker = "extra == 'group-10-tabfm-prod-yandex'" },
+    { name = "urllib3", marker = "extra == 'group-10-tabfm-prod-yandex'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/4c/d2/70fc708727b62d55bc24e43cc85f073039023212d482553d853c44e57bdb/requests-2.29.0.tar.gz", hash = "sha256:f2e34a75f4749019bb0e3effb66683630e4ffeaf75819fb51bebef1bf5aef059", size = 108279, upload-time = "2023-04-26T15:24:34.435Z" }
 wheels = [
@@ -2767,16 +2624,16 @@ name = "requests"
 version = "2.33.1"
 source = { registry = "https://pypi.org/simple" }
 resolution-markers = [
-    "extra == 'group-11-gfraud-prod-dev' and extra != 'group-11-gfraud-prod-yandex'",
-    "sys_platform == 'win32' and extra != 'group-11-gfraud-prod-dev' and extra != 'group-11-gfraud-prod-yandex'",
-    "sys_platform == 'emscripten' and extra != 'group-11-gfraud-prod-dev' and extra != 'group-11-gfraud-prod-yandex'",
-    "sys_platform != 'emscripten' and sys_platform != 'win32' and extra != 'group-11-gfraud-prod-dev' and extra != 'group-11-gfraud-prod-yandex'",
+    "extra == 'group-10-tabfm-prod-dev' and extra != 'group-10-tabfm-prod-yandex'",
+    "sys_platform == 'win32' and extra != 'group-10-tabfm-prod-dev' and extra != 'group-10-tabfm-prod-yandex'",
+    "sys_platform == 'emscripten' and extra != 'group-10-tabfm-prod-dev' and extra != 'group-10-tabfm-prod-yandex'",
+    "sys_platform != 'emscripten' and sys_platform != 'win32' and extra != 'group-10-tabfm-prod-dev' and extra != 'group-10-tabfm-prod-yandex'",
 ]
 dependencies = [
-    { name = "certifi", marker = "extra == 'group-11-gfraud-prod-dev' or extra != 'group-11-gfraud-prod-yandex'" },
-    { name = "charset-normalizer", marker = "extra == 'group-11-gfraud-prod-dev' or extra != 'group-11-gfraud-prod-yandex'" },
-    { name = "idna", marker = "extra == 'group-11-gfraud-prod-dev' or extra != 'group-11-gfraud-prod-yandex'" },
-    { name = "urllib3", marker = "extra == 'group-11-gfraud-prod-dev' or extra != 'group-11-gfraud-prod-yandex'" },
+    { name = "certifi" },
+    { name = "charset-normalizer" },
+    { name = "idna" },
+    { name = "urllib3" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/5f/a4/98b9c7c6428a668bf7e42ebb7c79d576a1c3c1e3ae2d47e674b468388871/requests-2.33.1.tar.gz", hash = "sha256:18817f8c57c6263968bc123d237e3b8b08ac046f5456bd1e307ee8f4250d3517", size = 134120, upload-time = "2026-03-30T16:09:15.531Z" }
 wheels = [
@@ -3037,7 +2894,7 @@ name = "sqlalchemy"
 version = "2.0.49"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "greenlet", marker = "platform_machine == 'AMD64' or platform_machine == 'WIN32' or platform_machine == 'aarch64' or platform_machine == 'amd64' or platform_machine == 'ppc64le' or platform_machine == 'win32' or platform_machine == 'x86_64' or (extra == 'group-11-gfraud-prod-dev' and extra == 'group-11-gfraud-prod-yandex')" },
+    { name = "greenlet", marker = "platform_machine == 'AMD64' or platform_machine == 'WIN32' or platform_machine == 'aarch64' or platform_machine == 'amd64' or platform_machine == 'ppc64le' or platform_machine == 'win32' or platform_machine == 'x86_64' or (extra == 'group-10-tabfm-prod-dev' and extra == 'group-10-tabfm-prod-yandex')" },
     { name = "typing-extensions" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/09/45/461788f35e0364a8da7bda51a1fe1b09762d0c32f12f63727998d85a873b/sqlalchemy-2.0.49.tar.gz", hash = "sha256:d15950a57a210e36dd4cec1aac22787e2a4d57ba9318233e2ef8b2daf9ff2d5f", size = 9898221, upload-time = "2026-04-03T16:38:11.704Z" }
@@ -3106,6 +2963,149 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/83/d3/803453b36afefb7c2bb238361cd4ae6125a569b4db67cd9e79846ba2d68c/sympy-1.14.0.tar.gz", hash = "sha256:d3d3fe8df1e5a0b42f0e7bdf50541697dbe7d23746e894990c030e2b05e72517", size = 7793921, upload-time = "2025-04-27T18:05:01.611Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/a2/09/77d55d46fd61b4a135c444fc97158ef34a095e5681d0a6c10b75bf356191/sympy-1.14.0-py3-none-any.whl", hash = "sha256:e091cc3e99d2141a0ba2847328f5479b05d94a6635cb96148ccb3f34671bd8f5", size = 6299353, upload-time = "2025-04-27T18:04:59.103Z" },
+]
+
+[[package]]
+name = "tabfm-prod"
+version = "0.0.1"
+source = { editable = "." }
+dependencies = [
+    { name = "catboost" },
+    { name = "delu" },
+    { name = "dgl" },
+    { name = "einops" },
+    { name = "einx" },
+    { name = "flash-attn" },
+    { name = "huggingface-hub", extra = ["torch"] },
+    { name = "lightgbm" },
+    { name = "loguru" },
+    { name = "loralib" },
+    { name = "numpy" },
+    { name = "ogb" },
+    { name = "omegaconf" },
+    { name = "optuna" },
+    { name = "pyyaml" },
+    { name = "rtdl-num-embeddings" },
+    { name = "rtdl-revisiting-models" },
+    { name = "scikit-learn" },
+    { name = "scipy" },
+    { name = "tensorboard" },
+    { name = "tomli-w" },
+    { name = "torch" },
+    { name = "torch-geometric" },
+    { name = "tqdm" },
+    { name = "transformers" },
+    { name = "xgboost" },
+    { name = "yandex-underdeep" },
+]
+
+[package.dev-dependencies]
+dev = [
+    { name = "bokeh" },
+    { name = "holoviews" },
+    { name = "hvplot" },
+    { name = "ipdb" },
+    { name = "ipython" },
+    { name = "ipywidgets" },
+    { name = "jupyterlab" },
+    { name = "matplotlib" },
+    { name = "mypy" },
+    { name = "nbclassic" },
+    { name = "notebook" },
+    { name = "nvitop" },
+    { name = "pandas", version = "2.3.3", source = { registry = "https://pypi.org/simple" } },
+    { name = "panel" },
+    { name = "plotnine" },
+    { name = "polars" },
+    { name = "pudb" },
+    { name = "pytest", version = "8.4.2", source = { registry = "https://pypi.org/simple" } },
+    { name = "ruff" },
+    { name = "seaborn" },
+    { name = "setuptools" },
+    { name = "tabulate" },
+]
+yandex = [
+    { name = "cyclopts" },
+    { name = "nirvana-api" },
+    { name = "nirvana-context" },
+    { name = "vh3" },
+    { name = "yandex-snooper" },
+    { name = "yandex-yt" },
+    { name = "yandex-yt-yson-bindings" },
+]
+yandex-nirvana-dl = [
+    { name = "nirvana-dl" },
+    { name = "yandex-global-state-controller" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "catboost", specifier = "==1.2.10" },
+    { name = "delu", specifier = "==0.0.26" },
+    { name = "dgl", specifier = "==2.4.0", index = "https://data.dgl.ai/wheels/torch-2.4/cu124/repo.html" },
+    { name = "einops", specifier = "==0.8.1" },
+    { name = "einx", specifier = "==0.4.2" },
+    { name = "flash-attn", specifier = "==2.8.3" },
+    { name = "huggingface-hub", extras = ["torch"], specifier = "==0.36.2" },
+    { name = "lightgbm", specifier = "==4.3.0" },
+    { name = "loguru", specifier = "==0.7.3" },
+    { name = "loralib", specifier = "==0.1.2" },
+    { name = "numpy", specifier = "==2.2.4" },
+    { name = "ogb", specifier = "==1.3.6" },
+    { name = "omegaconf", specifier = "==2.3.0" },
+    { name = "optuna", specifier = "==4.2.1" },
+    { name = "pyyaml", specifier = "==6.0.2" },
+    { name = "rtdl-num-embeddings", specifier = "==0.0.11" },
+    { name = "rtdl-revisiting-models", specifier = "==0.0.2" },
+    { name = "scikit-learn", specifier = "==1.6.1" },
+    { name = "scipy", specifier = "==1.15.2" },
+    { name = "tensorboard", specifier = "==2.19.0" },
+    { name = "tomli-w", specifier = "==1.2.0" },
+    { name = "torch", specifier = "==2.4.0" },
+    { name = "torch-geometric", specifier = "==2.6.1" },
+    { name = "tqdm", specifier = "==4.67.1" },
+    { name = "transformers", specifier = "==4.57.6" },
+    { name = "xgboost", specifier = "==3.2.0" },
+    { name = "yandex-underdeep", index = "https://pypi.yandex-team.ru/simple" },
+]
+
+[package.metadata.requires-dev]
+dev = [
+    { name = "bokeh", specifier = ">=3.7.3,<4" },
+    { name = "holoviews", specifier = ">=1.20.2,<2" },
+    { name = "hvplot", specifier = ">=0.11.3,<1" },
+    { name = "ipdb", specifier = ">=0.13.13,<1" },
+    { name = "ipython", specifier = ">=9.3.0,<10" },
+    { name = "ipywidgets", specifier = ">=8.1.7,<9" },
+    { name = "jupyterlab", specifier = ">=4.4.3,<5" },
+    { name = "matplotlib", specifier = ">=3.10.3,<4" },
+    { name = "mypy", specifier = ">=1.16.1,<2" },
+    { name = "nbclassic", specifier = ">=1.3.1,<2" },
+    { name = "notebook", specifier = ">=7.4.3,<8" },
+    { name = "nvitop", specifier = ">=1.5.1" },
+    { name = "pandas", specifier = ">=2.3.0,<3" },
+    { name = "panel", specifier = ">=1.7.1,<2" },
+    { name = "plotnine", specifier = ">=0.14.5,<1" },
+    { name = "polars", specifier = ">=1.30.0,<2" },
+    { name = "pudb", specifier = ">=2025.1" },
+    { name = "pytest", specifier = ">=8.4.0,<9" },
+    { name = "ruff", specifier = ">=0.12.0,<1" },
+    { name = "seaborn", specifier = ">=0.13.2,<1" },
+    { name = "setuptools", specifier = ">=80.9.0" },
+    { name = "tabulate", specifier = ">=0.9.0" },
+]
+yandex = [
+    { name = "cyclopts", specifier = "==3.12.0" },
+    { name = "nirvana-api", specifier = "==2.5.0.post15825108", index = "https://pypi.yandex-team.ru/simple" },
+    { name = "nirvana-context", index = "https://pypi.yandex-team.ru/simple" },
+    { name = "vh3", specifier = "==1.0.0.dev16116338", index = "https://pypi.yandex-team.ru/simple" },
+    { name = "yandex-snooper", index = "https://pypi.yandex-team.ru/simple" },
+    { name = "yandex-yt", specifier = "==0.15.4", index = "https://pypi.yandex-team.ru/simple" },
+    { name = "yandex-yt-yson-bindings", index = "https://pypi.yandex-team.ru/simple" },
+]
+yandex-nirvana-dl = [
+    { name = "nirvana-dl", specifier = "==7135262", index = "https://pypi.yandex-team.ru/simple" },
+    { name = "yandex-global-state-controller", specifier = "==1.2.1", index = "https://pypi.yandex-team.ru/simple" },
 ]
 
 [[package]]
@@ -3248,20 +3248,20 @@ dependencies = [
     { name = "fsspec" },
     { name = "jinja2" },
     { name = "networkx" },
-    { name = "nvidia-cublas-cu12", marker = "(platform_machine == 'x86_64' and sys_platform == 'linux') or (platform_machine != 'x86_64' and extra == 'group-11-gfraud-prod-dev' and extra == 'group-11-gfraud-prod-yandex') or (sys_platform != 'linux' and extra == 'group-11-gfraud-prod-dev' and extra == 'group-11-gfraud-prod-yandex')" },
-    { name = "nvidia-cuda-cupti-cu12", marker = "(platform_machine == 'x86_64' and sys_platform == 'linux') or (platform_machine != 'x86_64' and extra == 'group-11-gfraud-prod-dev' and extra == 'group-11-gfraud-prod-yandex') or (sys_platform != 'linux' and extra == 'group-11-gfraud-prod-dev' and extra == 'group-11-gfraud-prod-yandex')" },
-    { name = "nvidia-cuda-nvrtc-cu12", marker = "(platform_machine == 'x86_64' and sys_platform == 'linux') or (platform_machine != 'x86_64' and extra == 'group-11-gfraud-prod-dev' and extra == 'group-11-gfraud-prod-yandex') or (sys_platform != 'linux' and extra == 'group-11-gfraud-prod-dev' and extra == 'group-11-gfraud-prod-yandex')" },
-    { name = "nvidia-cuda-runtime-cu12", marker = "(platform_machine == 'x86_64' and sys_platform == 'linux') or (platform_machine != 'x86_64' and extra == 'group-11-gfraud-prod-dev' and extra == 'group-11-gfraud-prod-yandex') or (sys_platform != 'linux' and extra == 'group-11-gfraud-prod-dev' and extra == 'group-11-gfraud-prod-yandex')" },
-    { name = "nvidia-cudnn-cu12", marker = "(platform_machine == 'x86_64' and sys_platform == 'linux') or (platform_machine != 'x86_64' and extra == 'group-11-gfraud-prod-dev' and extra == 'group-11-gfraud-prod-yandex') or (sys_platform != 'linux' and extra == 'group-11-gfraud-prod-dev' and extra == 'group-11-gfraud-prod-yandex')" },
-    { name = "nvidia-cufft-cu12", marker = "(platform_machine == 'x86_64' and sys_platform == 'linux') or (platform_machine != 'x86_64' and extra == 'group-11-gfraud-prod-dev' and extra == 'group-11-gfraud-prod-yandex') or (sys_platform != 'linux' and extra == 'group-11-gfraud-prod-dev' and extra == 'group-11-gfraud-prod-yandex')" },
-    { name = "nvidia-curand-cu12", marker = "(platform_machine == 'x86_64' and sys_platform == 'linux') or (platform_machine != 'x86_64' and extra == 'group-11-gfraud-prod-dev' and extra == 'group-11-gfraud-prod-yandex') or (sys_platform != 'linux' and extra == 'group-11-gfraud-prod-dev' and extra == 'group-11-gfraud-prod-yandex')" },
-    { name = "nvidia-cusolver-cu12", marker = "(platform_machine == 'x86_64' and sys_platform == 'linux') or (platform_machine != 'x86_64' and extra == 'group-11-gfraud-prod-dev' and extra == 'group-11-gfraud-prod-yandex') or (sys_platform != 'linux' and extra == 'group-11-gfraud-prod-dev' and extra == 'group-11-gfraud-prod-yandex')" },
-    { name = "nvidia-cusparse-cu12", marker = "(platform_machine == 'x86_64' and sys_platform == 'linux') or (platform_machine != 'x86_64' and extra == 'group-11-gfraud-prod-dev' and extra == 'group-11-gfraud-prod-yandex') or (sys_platform != 'linux' and extra == 'group-11-gfraud-prod-dev' and extra == 'group-11-gfraud-prod-yandex')" },
-    { name = "nvidia-nccl-cu12", marker = "(platform_machine == 'x86_64' and sys_platform == 'linux') or (platform_machine != 'x86_64' and extra == 'group-11-gfraud-prod-dev' and extra == 'group-11-gfraud-prod-yandex') or (sys_platform != 'linux' and extra == 'group-11-gfraud-prod-dev' and extra == 'group-11-gfraud-prod-yandex')" },
-    { name = "nvidia-nvtx-cu12", marker = "(platform_machine == 'x86_64' and sys_platform == 'linux') or (platform_machine != 'x86_64' and extra == 'group-11-gfraud-prod-dev' and extra == 'group-11-gfraud-prod-yandex') or (sys_platform != 'linux' and extra == 'group-11-gfraud-prod-dev' and extra == 'group-11-gfraud-prod-yandex')" },
+    { name = "nvidia-cublas-cu12", marker = "(platform_machine == 'x86_64' and sys_platform == 'linux') or (platform_machine != 'x86_64' and extra == 'group-10-tabfm-prod-dev' and extra == 'group-10-tabfm-prod-yandex') or (sys_platform != 'linux' and extra == 'group-10-tabfm-prod-dev' and extra == 'group-10-tabfm-prod-yandex')" },
+    { name = "nvidia-cuda-cupti-cu12", marker = "(platform_machine == 'x86_64' and sys_platform == 'linux') or (platform_machine != 'x86_64' and extra == 'group-10-tabfm-prod-dev' and extra == 'group-10-tabfm-prod-yandex') or (sys_platform != 'linux' and extra == 'group-10-tabfm-prod-dev' and extra == 'group-10-tabfm-prod-yandex')" },
+    { name = "nvidia-cuda-nvrtc-cu12", marker = "(platform_machine == 'x86_64' and sys_platform == 'linux') or (platform_machine != 'x86_64' and extra == 'group-10-tabfm-prod-dev' and extra == 'group-10-tabfm-prod-yandex') or (sys_platform != 'linux' and extra == 'group-10-tabfm-prod-dev' and extra == 'group-10-tabfm-prod-yandex')" },
+    { name = "nvidia-cuda-runtime-cu12", marker = "(platform_machine == 'x86_64' and sys_platform == 'linux') or (platform_machine != 'x86_64' and extra == 'group-10-tabfm-prod-dev' and extra == 'group-10-tabfm-prod-yandex') or (sys_platform != 'linux' and extra == 'group-10-tabfm-prod-dev' and extra == 'group-10-tabfm-prod-yandex')" },
+    { name = "nvidia-cudnn-cu12", marker = "(platform_machine == 'x86_64' and sys_platform == 'linux') or (platform_machine != 'x86_64' and extra == 'group-10-tabfm-prod-dev' and extra == 'group-10-tabfm-prod-yandex') or (sys_platform != 'linux' and extra == 'group-10-tabfm-prod-dev' and extra == 'group-10-tabfm-prod-yandex')" },
+    { name = "nvidia-cufft-cu12", marker = "(platform_machine == 'x86_64' and sys_platform == 'linux') or (platform_machine != 'x86_64' and extra == 'group-10-tabfm-prod-dev' and extra == 'group-10-tabfm-prod-yandex') or (sys_platform != 'linux' and extra == 'group-10-tabfm-prod-dev' and extra == 'group-10-tabfm-prod-yandex')" },
+    { name = "nvidia-curand-cu12", marker = "(platform_machine == 'x86_64' and sys_platform == 'linux') or (platform_machine != 'x86_64' and extra == 'group-10-tabfm-prod-dev' and extra == 'group-10-tabfm-prod-yandex') or (sys_platform != 'linux' and extra == 'group-10-tabfm-prod-dev' and extra == 'group-10-tabfm-prod-yandex')" },
+    { name = "nvidia-cusolver-cu12", marker = "(platform_machine == 'x86_64' and sys_platform == 'linux') or (platform_machine != 'x86_64' and extra == 'group-10-tabfm-prod-dev' and extra == 'group-10-tabfm-prod-yandex') or (sys_platform != 'linux' and extra == 'group-10-tabfm-prod-dev' and extra == 'group-10-tabfm-prod-yandex')" },
+    { name = "nvidia-cusparse-cu12", marker = "(platform_machine == 'x86_64' and sys_platform == 'linux') or (platform_machine != 'x86_64' and extra == 'group-10-tabfm-prod-dev' and extra == 'group-10-tabfm-prod-yandex') or (sys_platform != 'linux' and extra == 'group-10-tabfm-prod-dev' and extra == 'group-10-tabfm-prod-yandex')" },
+    { name = "nvidia-nccl-cu12", marker = "(platform_machine == 'x86_64' and sys_platform == 'linux') or (platform_machine != 'x86_64' and extra == 'group-10-tabfm-prod-dev' and extra == 'group-10-tabfm-prod-yandex') or (sys_platform != 'linux' and extra == 'group-10-tabfm-prod-dev' and extra == 'group-10-tabfm-prod-yandex')" },
+    { name = "nvidia-nvtx-cu12", marker = "(platform_machine == 'x86_64' and sys_platform == 'linux') or (platform_machine != 'x86_64' and extra == 'group-10-tabfm-prod-dev' and extra == 'group-10-tabfm-prod-yandex') or (sys_platform != 'linux' and extra == 'group-10-tabfm-prod-dev' and extra == 'group-10-tabfm-prod-yandex')" },
     { name = "setuptools" },
     { name = "sympy" },
-    { name = "triton", marker = "(platform_machine == 'x86_64' and sys_platform == 'linux') or (platform_machine != 'x86_64' and extra == 'group-11-gfraud-prod-dev' and extra == 'group-11-gfraud-prod-yandex') or (sys_platform != 'linux' and extra == 'group-11-gfraud-prod-dev' and extra == 'group-11-gfraud-prod-yandex')" },
+    { name = "triton", marker = "(platform_machine == 'x86_64' and sys_platform == 'linux') or (platform_machine != 'x86_64' and extra == 'group-10-tabfm-prod-dev' and extra == 'group-10-tabfm-prod-yandex') or (sys_platform != 'linux' and extra == 'group-10-tabfm-prod-dev' and extra == 'group-10-tabfm-prod-yandex')" },
     { name = "typing-extensions" },
 ]
 wheels = [
@@ -3282,8 +3282,8 @@ dependencies = [
     { name = "numpy" },
     { name = "psutil" },
     { name = "pyparsing" },
-    { name = "requests", version = "2.29.0", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-11-gfraud-prod-yandex'" },
-    { name = "requests", version = "2.33.1", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-11-gfraud-prod-dev' or extra != 'group-11-gfraud-prod-yandex'" },
+    { name = "requests", version = "2.29.0", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-10-tabfm-prod-yandex'" },
+    { name = "requests", version = "2.33.1", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-10-tabfm-prod-dev' or extra != 'group-10-tabfm-prod-yandex'" },
     { name = "tqdm" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/e8/81/e1b015494cb9e0bf4c47cc8426e49736120248733be0e22072a5628ae9ed/torch_geometric-2.6.1.tar.gz", hash = "sha256:1f18f9d0fc4d2239d526221e4f22606a4a3895b5d965a9856d27610a3df662c6", size = 771490, upload-time = "2024-09-26T08:11:30.25Z" }
@@ -3313,7 +3313,7 @@ name = "tqdm"
 version = "4.67.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "colorama", marker = "sys_platform == 'win32' or (extra == 'group-11-gfraud-prod-dev' and extra == 'group-11-gfraud-prod-yandex')" },
+    { name = "colorama", marker = "sys_platform == 'win32' or (extra == 'group-10-tabfm-prod-dev' and extra == 'group-10-tabfm-prod-yandex')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/a8/4b/29b4ef32e036bb34e4ab51796dd745cdba7ed47ad142a9f4a1eb8e0c744d/tqdm-4.67.1.tar.gz", hash = "sha256:f8aef9c52c08c13a65f30ea34f4e5aac3fd1a34959879d7e59e63027286627f2", size = 169737, upload-time = "2024-11-24T20:12:22.481Z" }
 wheels = [
@@ -3340,8 +3340,8 @@ dependencies = [
     { name = "packaging" },
     { name = "pyyaml" },
     { name = "regex" },
-    { name = "requests", version = "2.29.0", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-11-gfraud-prod-yandex'" },
-    { name = "requests", version = "2.33.1", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-11-gfraud-prod-dev' or extra != 'group-11-gfraud-prod-yandex'" },
+    { name = "requests", version = "2.29.0", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-10-tabfm-prod-yandex'" },
+    { name = "requests", version = "2.33.1", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-10-tabfm-prod-dev' or extra != 'group-10-tabfm-prod-yandex'" },
     { name = "safetensors" },
     { name = "tokenizers" },
     { name = "tqdm" },
@@ -3356,7 +3356,7 @@ name = "triton"
 version = "3.0.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "filelock", marker = "(sys_platform != 'emscripten' and sys_platform != 'win32') or (sys_platform == 'emscripten' and extra == 'group-11-gfraud-prod-dev') or (sys_platform == 'win32' and extra == 'group-11-gfraud-prod-dev')" },
+    { name = "filelock" },
 ]
 wheels = [
     { url = "https://files.pythonhosted.org/packages/fe/7b/7757205dee3628f75e7991021d15cd1bd0c9b044ca9affe99b50879fc0e1/triton-3.0.0-1-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl", hash = "sha256:34e509deb77f1c067d8640725ef00c5cbfcb2052a1a3cb6a6d343841f92624eb", size = 209464695, upload-time = "2024-07-19T20:57:22.532Z" },
@@ -3469,9 +3469,9 @@ dependencies = [
     { name = "typing-extensions" },
     { name = "yandex-yt" },
 ]
-sdist = { url = "https://pypi.yandex-team.ru/simple/download/vh3/1583588/vh3-1.0.0.dev16116338.tar.gz", hash = "md5:b1f1c3ce0c8dbac6ff75aff3968f978f" }
+sdist = { url = "https://pypi.yandex-team.ru/simple/download/vh3/1583588/vh3-1.0.0.dev16116338.tar.gz", hash = "sha256:be6eb7faa04c70014a77d5aa70df8bea36a865e4f1638dcca594d5f2cc5b99fd" }
 wheels = [
-    { url = "https://pypi.yandex-team.ru/simple/download/vh3/1583587/vh3-1.0.0.dev16116338-py3-none-any.whl", hash = "md5:7dba22e58ab9c7f651b1e9c36f0279ce" },
+    { url = "https://pypi.yandex-team.ru/simple/download/vh3/1583587/vh3-1.0.0.dev16116338-py3-none-any.whl", hash = "sha256:7ea325701c5eff11f52b7d3601415eb537d3b44c680bef41d5161a74e94a8d33" },
 ]
 
 [[package]]
@@ -3574,7 +3574,7 @@ version = "3.2.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "numpy" },
-    { name = "nvidia-nccl-cu12", marker = "sys_platform == 'linux' or (extra == 'group-11-gfraud-prod-dev' and extra == 'group-11-gfraud-prod-yandex')" },
+    { name = "nvidia-nccl-cu12", marker = "sys_platform == 'linux' or (extra == 'group-10-tabfm-prod-dev' and extra == 'group-10-tabfm-prod-yandex')" },
     { name = "scipy" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/91/bb/1eb0242409d22db725d7a88088e6cfd6556829fb0736f9ff69aa9f1e9455/xgboost-3.2.0.tar.gz", hash = "sha256:99b0e9a2a64896cdaf509c5e46372d336c692406646d20f2af505003c0c5d70d", size = 1263936, upload-time = "2026-02-10T11:03:05.542Z" }
@@ -3608,9 +3608,9 @@ name = "yandex-snooper"
 version = "1.0.19224735"
 source = { registry = "https://pypi.yandex-team.ru/simple" }
 wheels = [
-    { url = "https://pypi.yandex-team.ru/simple/download/yandex-snooper/1862666/yandex_snooper-1.0.19224735-cp36-abi3-linux_x86_64.whl", hash = "md5:5a340b5400b34fbf7df6988ac2403c90" },
-    { url = "https://pypi.yandex-team.ru/simple/download/yandex-snooper/1862665/yandex_snooper-1.0.19224735-cp36-abi3-macosx_10_16_x86_64.whl", hash = "md5:8fb04adf9c1d2abb3ec323988c803257" },
-    { url = "https://pypi.yandex-team.ru/simple/download/yandex-snooper/1862667/yandex_snooper-1.0.19224735-cp36-abi3-macosx_11_0_arm64.whl", hash = "md5:284151d59dc04accf86a542cc6ea1310" },
+    { url = "https://pypi.yandex-team.ru/simple/download/yandex-snooper/1862666/yandex_snooper-1.0.19224735-cp36-abi3-linux_x86_64.whl", hash = "sha256:b21f727db6e4c8bb9446b97c7ac3f9a9ef9ffc59afd5085ff243885f78d9cc7e" },
+    { url = "https://pypi.yandex-team.ru/simple/download/yandex-snooper/1862665/yandex_snooper-1.0.19224735-cp36-abi3-macosx_10_16_x86_64.whl", hash = "sha256:33104ad802bb94f4602f35ac28fd40a6196de1bba2656b492c7aa2408fd5eac3" },
+    { url = "https://pypi.yandex-team.ru/simple/download/yandex-snooper/1862667/yandex_snooper-1.0.19224735-cp36-abi3-macosx_11_0_arm64.whl", hash = "sha256:2fe15aecaaa672f719dd7c074cd06da17bb89c88d446c8a97a3dc86e59458f05" },
 ]
 
 [[package]]
@@ -3619,13 +3619,13 @@ version = "1.0.46"
 source = { registry = "https://pypi.yandex-team.ru/simple" }
 dependencies = [
     { name = "python-dateutil" },
-    { name = "requests", version = "2.29.0", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-11-gfraud-prod-yandex'" },
-    { name = "requests", version = "2.33.1", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-11-gfraud-prod-dev' or extra != 'group-11-gfraud-prod-yandex'" },
+    { name = "requests", version = "2.29.0", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-10-tabfm-prod-yandex'" },
+    { name = "requests", version = "2.33.1", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-10-tabfm-prod-dev' or extra != 'group-10-tabfm-prod-yandex'" },
     { name = "typing-extensions" },
     { name = "urllib3" },
     { name = "yandex-yt" },
 ]
-sdist = { url = "https://pypi.yandex-team.ru/simple/download/yandex-underdeep/1862681/yandex-underdeep-1.0.46.tar.gz", hash = "md5:b412b3c7daef9b5781ad8f95599997fb" }
+sdist = { url = "https://pypi.yandex-team.ru/simple/download/yandex-underdeep/1862681/yandex-underdeep-1.0.46.tar.gz", hash = "sha256:aadf96fc62d11d0f57af4e44e4bcd7dedbcaeb8262227062141c5658eed05355" }
 
 [[package]]
 name = "yandex-yt"
@@ -3635,7 +3635,7 @@ dependencies = [
     { name = "yandex-snooper" },
 ]
 wheels = [
-    { url = "https://pypi.yandex-team.ru/simple/download/yandex-yt/1566645/yandex_yt-0.15.4-py3-none-any.whl", hash = "md5:a3f6859c7c76f6d0bea4185bcf046e40" },
+    { url = "https://pypi.yandex-team.ru/simple/download/yandex-yt/1566645/yandex_yt-0.15.4-py3-none-any.whl", hash = "sha256:fdd34e06b321157e9348c411206bc6e25a721ad782b645d84c15d1b0ba696ae0" },
 ]
 
 [[package]]
@@ -3646,10 +3646,11 @@ dependencies = [
     { name = "yandex-yt" },
 ]
 wheels = [
-    { url = "https://pypi.yandex-team.ru/simple/download/yandex-yt-yson-bindings/1560307/yandex_yt_yson_bindings-0.4.9.post0-cp34-abi3-linux_x86_64.whl", hash = "md5:7321c2500f9f41534aad2b164d738c22" },
-    { url = "https://pypi.yandex-team.ru/simple/download/yandex-yt-yson-bindings/1560309/yandex_yt_yson_bindings-0.4.9.post0-cp34-abi3-macosx_10_10_intel.whl", hash = "md5:7644364fae124f6442e8bd5e33a3eb4c" },
-    { url = "https://pypi.yandex-team.ru/simple/download/yandex-yt-yson-bindings/1560308/yandex_yt_yson_bindings-0.4.9.post0-cp34-abi3-macosx_11_0_arm64.whl", hash = "md5:d54822de0d7068046f3583f341cf00e5" },
-    { url = "https://pypi.yandex-team.ru/simple/download/yandex-yt-yson-bindings/1765977/yandex_yt_yson_bindings-0.4.9.post0-cp34-abi3-win_amd64.whl", hash = "md5:9527ca723176ed91e0c315b007a8aa59" },
+    { url = "https://pypi.yandex-team.ru/simple/download/yandex-yt-yson-bindings/1944347/yandex_yt_yson_bindings-0.4.9.post0-cp34-abi3-linux_aarch64.whl", hash = "sha256:753343fa0eb6df6382472c433e1d1cec8ba7206aa626ba0d35bd3723224d833c" },
+    { url = "https://pypi.yandex-team.ru/simple/download/yandex-yt-yson-bindings/1560307/yandex_yt_yson_bindings-0.4.9.post0-cp34-abi3-linux_x86_64.whl", hash = "sha256:b1572d9fd2a5b39912f12b25cfd7b56f3edf20a35349b614e454b8e0759320d2" },
+    { url = "https://pypi.yandex-team.ru/simple/download/yandex-yt-yson-bindings/1560309/yandex_yt_yson_bindings-0.4.9.post0-cp34-abi3-macosx_10_10_intel.whl", hash = "sha256:beceedef81c134c6f2af7ce65ba7311eaad0bc06e7a34aa2cc83a97d5e169542" },
+    { url = "https://pypi.yandex-team.ru/simple/download/yandex-yt-yson-bindings/1560308/yandex_yt_yson_bindings-0.4.9.post0-cp34-abi3-macosx_11_0_arm64.whl", hash = "sha256:98719a670a2f20d6e785fffde2cea67749ba904dc8a9c3498f0f9e81e6141ce9" },
+    { url = "https://pypi.yandex-team.ru/simple/download/yandex-yt-yson-bindings/1765977/yandex_yt_yson_bindings-0.4.9.post0-cp34-abi3-win_amd64.whl", hash = "sha256:0520e0fcf141a2ac4b88f57dfae9f5f6d9912f956eacf41f93ce3100f56b913c" },
 ]
 
 [[package]]

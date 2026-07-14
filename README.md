@@ -25,7 +25,7 @@ The context table must have a `Label`; the test table's label is optional
 |------|---------|
 | `CONFIG.yaml` | Run configuration — see `config.py::Config`. |
 | `cd.txt` | CatBoost-style column description — see below. |
-| `CONTEXT_MR_TABLE.json` | `{"cluster": ..., "table": ...}` — ICL context table (downloaded fully). |
+| `TRAIN_MR_TABLE.json` | `{"cluster": ..., "table": ...}` — ICL context table (downloaded fully). |
 | `TEST_MR_TABLE.json` | `{"cluster": ..., "table": ...}` — table to predict (streamed). |
 
 `YT_TOKEN` must be set in the environment.

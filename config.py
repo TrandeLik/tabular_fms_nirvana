@@ -35,7 +35,7 @@ class Config:
     # >>> Data
     # Name of the list-valued YT column that holds the raw feature vector; cd.txt
     # indices refer to positions within it.
-    features_column: str = 'features'
+    features_column: str = 'value'
     batch_size: int = 1024
     # Output table root for temporary result tables on YT.
     output_table_tmp_path: str = '//home/yr/trandelik/crypta/datasets/'

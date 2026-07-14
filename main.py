@@ -268,7 +268,7 @@ def main() -> None:
     experiment_name = config.get_experiment_name()
     logger.info(f'Experiment: {experiment_name} | task_type={task_type.value}')
 
-    context_mr = _load_mr_table('CONTEXT_MR_TABLE.json')
+    context_mr = _load_mr_table('TRAIN_MR_TABLE.json')
     test_mr = _load_mr_table('TEST_MR_TABLE.json')
 
     yt.config.config['token'] = YT_TOKEN
