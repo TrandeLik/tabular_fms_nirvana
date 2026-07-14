@@ -80,6 +80,7 @@ dev = [
     "yandex-snooper",
     "yandex-yt==0.15.4",
     "yandex-yt-yson-bindings",
+    "ytreader==14607631",
 ]
 
 [tool.mypy]
@@ -147,5 +148,6 @@ yandex-global-state-controller = { index = "yandex" }
 yandex-snooper = { index = "yandex" }
 yandex-yt = { index = "yandex" }
 yandex-yt-yson-bindings = { index = "yandex" }
+ytreader = { index = "yandex" }
 dgl = { index = "dgl-index" }
 yandex-underdeep = { index = "yandex" }
