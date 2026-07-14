@@ -4,12 +4,14 @@ Implements the :class:`yt_dataloader.table_processors.TableProcessor` contract
 (``decode_fn`` + ``collate_fn``) that :class:`yt_dataloader.YTDataLoader` wraps
 into a ``ytreader.CustomProcessor``. Each row carries:
 
-* a single **list-valued** column (``features_column``) whose first element is
-  the ``Label`` and whose remaining elements are the feature values, and
+* a single **bytes** column (``features_column``) holding a tab-separated string
+  of float values; decoded and split on ``\t`` it yields a vector whose first
+  element is the ``Label`` and whose remaining elements are the feature values,
+  and
 * a separate **id** column (``cd_spec.docid_column``) holding the row key.
 
 The :class:`~cd_utils.CdSpec` selects model features and the label by position
-within the list, and names the id column.
+within the decoded vector, and names the id column.
 """
 
 from __future__ import annotations
@@ -33,24 +35,35 @@ def _get(row: dict, key: str):
     )
 
 
-def _to_float_list(value, column: str) -> list[float]:
-    """Coerce a YSON list column into a python list of floats."""
+def _to_float_array(value, column: str) -> np.ndarray:
+    """Decode a tab-separated bytes/str feature column into a float32 array.
+
+    The column arrives as ``bytes`` (or ``str``); its decoded content is a
+    ``\\t``-separated list of float values whose positions are addressed by the
+    cd spec. Empty fields become NaN.
+    """
     if value is None:
         raise ValueError(f'Feature column {column!r} is null')
-    if isinstance(value, (str, bytes)) or not hasattr(value, '__iter__'):
+    if isinstance(value, bytes):
+        text = value.decode()
+    elif isinstance(value, str):
+        text = value
+    else:
         raise TypeError(
-            f'Feature column {column!r} must be a list, got {type(value).__name__}'
+            f'Feature column {column!r} must be bytes/str, got '
+            f'{type(value).__name__}'
         )
-    out: list[float] = []
-    for i, v in enumerate(value):
-        if v is None:
-            out.append(np.nan)
+    fields = text.split('\t')
+    out = np.empty(len(fields), dtype=np.float32)
+    for i, f in enumerate(fields):
+        if f == '':
+            out[i] = np.nan
             continue
         try:
-            out.append(float(v))
+            out[i] = np.float32(f)
         except (TypeError, ValueError) as err:
             raise ValueError(
-                f'Feature column {column!r} position {i} is not numeric: {v!r}'
+                f'Feature column {column!r} position {i} is not numeric: {f!r}'
             ) from err
     return out
 
@@ -69,19 +82,19 @@ class CdTableProcessor(TableProcessor):
 
     def decode_fn(self, row: dict) -> DecodedRow:
         spec = self.cd_spec
-        raw = _to_float_list(_get(row, self.features_column), self.features_column)
+        raw = _to_float_array(_get(row, self.features_column), self.features_column)
 
-        # The cd file references positions inside the feature list; a row shorter
-        # than expected means the cd file and the table are out of sync.
-        if len(raw) <= spec.max_feature_pos:
+        # The cd file references positions inside the feature vector; a row
+        # shorter than expected means the cd file and the table are out of sync.
+        if raw.shape[0] <= spec.max_feature_pos:
             raise ValueError(
-                f'Row has {len(raw)} values in column {self.features_column!r}, '
+                f'Row has {raw.shape[0]} values in column {self.features_column!r}, '
                 f'but cd.txt references feature position {spec.max_feature_pos}. '
                 f'The cd file and the table schema are out of sync.'
             )
 
-        features = [raw[i] for i in spec.feature_positions]
-        label = raw[spec.label_pos]
+        features = raw[spec.feature_positions]
+        label = float(raw[spec.label_pos])
         # The id is a separate YT column, kept raw (it is a key, not a feature).
         docid = _get(row, spec.docid_column)
 
