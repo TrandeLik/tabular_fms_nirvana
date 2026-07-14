@@ -1,0 +1,151 @@
+[build-system]
+requires = ["setuptools >= 61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tabfm-prod"
+version = "0.0.1"
+description = "gfraud-prod"
+requires-python = "==3.12.9"
+
+[dependency-groups]
+dev = [
+    # ==================================================================
+    # Template
+    # ==================================================================
+    "delu==0.0.26",
+    "loguru==0.7.3",
+    "numpy==2.2.4",
+    "optuna==4.2.1",
+    "PyYAML==6.0.2",
+    "rtdl-num-embeddings==0.0.11",
+    "rtdl-revisiting-models==0.0.2",
+    "scikit-learn==1.6.1",
+    "scipy==1.15.2",
+    "tensorboard==2.19.0",
+    "tomli-w==1.2.0",
+    "torch==2.4.0",
+    "tqdm==4.67.1",
+    # ==================================================================
+    # Project
+    # ==================================================================
+    "einops==0.8.1",
+    "loralib==0.1.2",
+    "flash-attn==2.8.3",
+    # The following packages replace `autogluon.tabular[mitra]` dependency
+    # from the pafnuty project. Versions are pinned to the latest releases
+    # compatible with autogluon's constraints.
+    # See: https://github.com/autogluon/autogluon/blob/master/tabular/setup.py
+    #      https://github.com/autogluon/autogluon/blob/master/core/src/autogluon/core/_setup_utils.py
+    "huggingface_hub[torch]==0.36.2",
+    "transformers==4.57.6",
+    "einx==0.4.2",
+    "omegaconf==2.3.0",
+    "yandex-underdeep",
+    # ==================================================================
+    # Dev tooling
+    # ==================================================================
+    "nvitop>=1.5.1",
+    "bokeh>=3.7.3,<4",
+    "holoviews>=1.20.2,<2",
+    "hvplot>=0.11.3,<1",
+    "ipdb>=0.13.13,<1",
+    "ipython>=9.3.0,<10",
+    "ipywidgets>=8.1.7,<9",
+    "matplotlib>=3.10.3,<4",
+    "mypy>=1.16.1,<2",
+    "nbclassic>=1.3.1,<2",
+    "pandas>=2.3.0,<3",
+    "panel>=1.7.1,<2",
+    "plotnine>=0.14.5,<1",
+    "polars>=1.30.0,<2",
+    "pudb>=2025.1",
+    "pytest>=8.4.0,<9",
+    "ruff>=0.12.0,<1",
+    "seaborn>=0.13.2,<1",
+    "setuptools>=80.9.0",
+    "tabulate>=0.9.0",
+    # ==================================================================
+    # Yandex Nirvana DL
+    # ==================================================================
+    "nirvana-dl==7135262",
+    "yandex-global-state-controller==1.2.1",
+    # ==================================================================
+    # Yandex
+    # ==================================================================
+    "cyclopts==3.12.0",
+    "nirvana-api==2.5.0.post15825108",
+    "nirvana-context",
+    "vh3==1.0.0.dev16116338",
+    "yandex-snooper",
+    "yandex-yt==0.15.4",
+    "yandex-yt-yson-bindings",
+]
+
+[tool.mypy]
+check_untyped_defs = true
+ignore_missing_imports = true
+exclude = ["^local/*"]
+
+[tool.pyright]
+exclude = [
+    # Default rules
+    '**/node_modules',
+    '**/__pycache__',
+    '**/.*',
+    # Custom rules
+    "cache",
+    "data",
+    "exp",
+    "dev/exp",
+    "dev/*/exp",
+    "local",
+]
+# venv = ".venv"
+venvPath = "."
+
+[tool.ruff]
+line-length = 88
+extend-exclude = ["vendor/**/*.py"]
+
+[tool.ruff.lint]
+extend-select = ["RUF", "UP", "E501", "E731"]
+
+[tool.ruff.format]
+quote-style = "single"
+
+[tool.setuptools]
+packages = ["lib", "bin", "dev", "vendor"]
+
+[tool.uv]
+default-groups = ["dev"]
+package = true
+
+[tool.uv.extra-build-dependencies]
+flash-attn = [{ requirement = "torch", match-runtime = true }]
+
+[tool.uv.extra-build-variables]
+flash-attn = { FLASH_ATTENTION_SKIP_CUDA_BUILD = "TRUE" }
+
+[[tool.uv.index]]
+name = "yandex"
+url = "https://pypi.yandex-team.ru/simple"
+explicit = true
+
+[[tool.uv.index]]
+name = "dgl-index"
+url = "https://data.dgl.ai/wheels/torch-2.4/cu124/repo.html"
+format = "flat"
+explicit = true
+
+[tool.uv.sources]
+nirvana-api = { index = "yandex" }
+nirvana-context = { index = "yandex" }
+nirvana-dl = { index = "yandex" }
+vh3 = { index = "yandex" }
+yandex-global-state-controller = { index = "yandex" }
+yandex-snooper = { index = "yandex" }
+yandex-yt = { index = "yandex" }
+yandex-yt-yson-bindings = { index = "yandex" }
+dgl = { index = "dgl-index" }
+yandex-underdeep = { index = "yandex" }
