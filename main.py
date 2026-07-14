@@ -47,6 +47,14 @@ from yt_dataloader import YTDataLoader  # noqa: E402
 CHECKPOINT_DIR = Path(__file__).parent / 'checkpoints'
 CD_FILE = Path('cd.txt')
 CONFIG_FILE = Path('CONFIG.yaml')
+# Descriptor of the written output table ({"cluster", "table"}), consumed by
+# downstream Nirvana operations.
+OUTPUT_MR_TABLE_FILE = Path('MR_TABLE_OUTPUT.json')
+
+# Classification sentinel written into the Label slot for rows that have no
+# target. Such rows are skipped when building the ICL context (they cannot serve
+# as support) and are excluded from metrics; regression uses NaN for the same.
+NO_LABEL_CLASS = -9999
 
 YT_TOKEN = os.environ.get('YT_TOKEN')
 
@@ -98,24 +106,22 @@ def _load_mr_table(name: str) -> dict[str, str]:
 
 def _download_context(
     loader: YTDataLoader,
-) -> tuple[np.ndarray, np.ndarray | None]:
-    """Read the whole context loader into feature/label arrays."""
+) -> tuple[np.ndarray, np.ndarray]:
+    """Read the whole context loader into feature/label arrays.
+
+    Label is always present (required by the cd file), so labels are returned
+    unconditionally; unlabeled rows would carry NaN.
+    """
     feats: list[np.ndarray] = []
     labels: list[np.ndarray] = []
-    have_labels = True
     for batch in tqdm(loader, desc='context', unit='batch'):
         feats.append(batch['features'])
-        if batch['labels'] is None:
-            have_labels = False
-        else:
-            labels.append(batch['labels'])
+        labels.append(batch['labels'])
     loader.reader.reader.close()
 
     if not feats:
-        return np.empty((0, 0), dtype=np.float32), None
-    x = np.concatenate(feats, axis=0)
-    y = np.concatenate(labels, axis=0) if have_labels and labels else None
-    return x, y
+        return np.empty((0, 0), dtype=np.float32), np.empty((0,), dtype=np.float32)
+    return np.concatenate(feats, axis=0), np.concatenate(labels, axis=0)
 
 
 def _make_loader(
@@ -143,24 +149,35 @@ def _prediction_type(task_type: TaskType) -> str:
     return 'labels' if task_type == TaskType.REGRESSION else 'probs'
 
 
+def _labeled_mask(labels: np.ndarray, task_type: TaskType) -> np.ndarray:
+    """Boolean mask of rows that carry a usable target.
+
+    A row has no target when its label is NaN (missing everywhere) or, for
+    classification, when it equals the ``-9999`` sentinel. Such rows cannot
+    serve as ICL support and are excluded from metrics.
+    """
+    mask = ~np.isnan(labels)
+    if task_type != TaskType.REGRESSION:
+        mask &= labels != NO_LABEL_CLASS
+    return mask
+
+
 def _to_output_rows(
-    docids: np.ndarray | None,
+    docids: np.ndarray,
     preds: np.ndarray,
     task_type: TaskType,
-    offset: int,
 ) -> list[dict[str, Any]]:
-    """Build YT output rows: a key plus the prediction.
+    """Build YT output rows: the row key (SampleId) plus the prediction.
 
     Classification writes the positive-class / argmax probability plus the full
-    probability vector; regression writes the scalar value. When the table has
-    no DocId, a running integer index is used as the key.
+    probability vector; regression writes the scalar value.
     """
-    n = preds.shape[0]
-    keys = (
-        docids.tolist()
-        if docids is not None
-        else list(range(offset, offset + n))
-    )
+    if docids.shape[0] != preds.shape[0]:
+        raise ValueError(
+            f'docids ({docids.shape[0]}) and predictions ({preds.shape[0]}) '
+            f'length mismatch'
+        )
+    keys = docids.tolist()
     rows: list[dict[str, Any]] = []
     if task_type == TaskType.REGRESSION:
         for k, v in zip(keys, preds.tolist()):
@@ -185,9 +202,27 @@ def _to_output_rows(
 
 
 def _key(k: Any) -> int:
-    # DocId positions come through as floats (feature list is numeric); keys are
-    # integer ids, so round-trip through int.
-    return int(k)
+    """Coerce a SampleId value to the Int64 output key.
+
+    Ids arrive from a dedicated YT column and are expected to be integers
+    (possibly as float/str); a non-integer id is a schema mismatch worth
+    surfacing rather than silently truncating.
+    """
+    if isinstance(k, bool):
+        raise TypeError(f'SampleId must be an integer, got bool {k!r}')
+    if isinstance(k, (int, np.integer)):
+        return int(k)
+    if isinstance(k, (float, np.floating)):
+        if not float(k).is_integer():
+            raise ValueError(f'SampleId {k!r} is not an integer')
+        return int(k)
+    if isinstance(k, (str, bytes)):
+        s = k.decode() if isinstance(k, bytes) else k
+        try:
+            return int(s)
+        except ValueError as err:
+            raise ValueError(f'SampleId {k!r} is not an integer key') from err
+    raise TypeError(f'Unsupported SampleId type {type(k).__name__}: {k!r}')
 
 
 def _write_predictions(
@@ -263,10 +298,18 @@ def main() -> None:
             f'Context table {context_mr["table"]!r} is empty; cannot build an '
             f'ICL context.'
         )
-    if y_context_np is None:
+    # Only labeled rows can serve as ICL support; drop rows with no target
+    # (NaN, or the -9999 sentinel for classification).
+    labeled = _labeled_mask(y_context_np, task_type)
+    n_dropped = int((~labeled).sum())
+    if n_dropped:
+        logger.warning(f'Dropping {n_dropped} unlabeled context rows (no target)')
+        raw_context = raw_context[labeled]
+        y_context_np = y_context_np[labeled]
+    if raw_context.shape[0] == 0:
         raise ValueError(
-            'Context table has no Label column, but a label is required to '
-            'build the ICL context (declare a Label in cd.txt).'
+            f'Context table {context_mr["table"]!r} has no labeled rows; cannot '
+            f'build an ICL context.'
         )
     logger.info(f'Context: {raw_context.shape[0]} rows, {raw_context.shape[1]} feats')
 
@@ -308,39 +351,38 @@ def main() -> None:
     all_rows: list[dict[str, Any]] = []
     y_true_parts: list[np.ndarray] = []
     y_pred_parts: list[np.ndarray] = []
-    have_test_labels = True
-    offset = 0
     for batch in tqdm(test_loader, desc='predict', unit='batch'):
         x_batch = torch.from_numpy(transform_batch(batch['features'], fitted)).to(
             device
         )
         preds = predict_batch(model, ensemble, x_batch, _chunk_state=chunk_state)
 
-        all_rows.extend(
-            _to_output_rows(batch['docids'], preds, task_type, offset)
-        )
-        offset += preds.shape[0]
+        all_rows.extend(_to_output_rows(batch['docids'], preds, task_type))
 
-        if batch['labels'] is None:
-            have_test_labels = False
-        elif have_test_labels:
-            y_true_parts.append(batch['labels'])
-            y_pred_parts.append(preds)
+        # Label is always present in the row (required by the cd) but may be NaN
+        # for unlabeled test rows; collect everything and filter NaN below.
+        y_true_parts.append(batch['labels'])
+        y_pred_parts.append(preds)
     test_loader.reader.reader.close()
 
-    # >>> Metrics (only if test labels are present)
-    if have_test_labels and y_true_parts:
-        y_true = np.concatenate(y_true_parts, axis=0)
-        y_pred = np.concatenate(y_pred_parts, axis=0)
+    # >>> Metrics over the rows that carry a target only (NaN, and the -9999
+    # classification sentinel, are excluded).
+    y_true = np.concatenate(y_true_parts, axis=0)
+    y_pred = np.concatenate(y_pred_parts, axis=0)
+    labeled = _labeled_mask(y_true, task_type)
+    n_labeled = int(labeled.sum())
+    if n_labeled:
+        y_true = y_true[labeled]
+        y_pred = y_pred[labeled]
         if task_type == TaskType.BINCLASS and y_pred.ndim == 2:
             y_pred = y_pred[:, 1]
         metrics = calculate_metrics(
             y_true, y_pred, task_type, _prediction_type(task_type)
         )
-        logger.info('Test metrics:')
+        logger.info(f'Test metrics ({n_labeled} labeled rows):')
         print(json.dumps(metrics, indent=2, ensure_ascii=False))
     else:
-        logger.info('Test table has no labels — writing predictions only.')
+        logger.info('Test table has no labeled rows — writing predictions only.')
 
     # >>> Write predictions to YT
     if not all_rows:
@@ -357,7 +399,7 @@ def main() -> None:
         config.output_table_tmp_path,
         experiment_name,
     )
-    with open('MR_TABLE_OUTPUT', 'w') as f:
+    with OUTPUT_MR_TABLE_FILE.open('w') as f:
         json.dump(mr_out, f)
     logger.info(f'Done. Output: {mr_out}')
 

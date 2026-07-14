@@ -32,36 +32,41 @@ The context table must have a `Label`; the test table's label is optional
 
 ### `cd.txt` — column description
 
-Each YT row carries the feature vector in a single **list-valued column**
-(name configurable via `features_column`, default `features`). `cd.txt` assigns
-a role to each **position** within that list:
+A [CatBoost-style](https://catboost.ai/docs/en/concepts/input-data_column-descfile)
+column description. Columns are numbered from 0 as in the original dataset;
+values reach the job from a YT table in two places:
+
+- **`SampleId` / `DocId`** — a **separate YT column** (addressed by the name in
+  the cd line's 3rd field), holding the row key written next to each prediction.
+  It is **not** part of the feature list. **Required.**
+- Every other column lives inside a single **list-valued** YT column (name
+  configurable via `features_column`, default `features`), with **`Label`** as
+  its **first** element, followed by the feature values.
 
 ```
-0	Auxiliary
-1	Label
-2	DocId
-3	Weight
-4	Num	FEATURE_1
-5	Num	FEATURE_2
-6	Num	FEATURE_3
-7	Num	FEATURE_4
+0	SampleId	key                          # separate YT column 'key'
+1	Label	is_fraud                         # features[0]
+2	Num	FActiveDayPercent(Record)            # features[1]
+3	Num	FBaseAntifraudAction1d(DeviceId)     # features[2]
 ```
 
 Tab-separated `<index>\t<Type>[\t<NAME>]`. `#` comments and blank lines are
-ignored. Recognized roles:
+ignored. A column at cd index `i` maps to feature-list position `i − <Label
+index>` (so `Label` → `features[0]`). Recognized roles:
 
-- **`Label`** — the target (`y`); used for the ICL context, and for metrics on
-  test when present.
-- **`DocId` / `SampleId`** — the row key written next to each prediction. If
-  absent, a running integer index is used.
+- **`Label`** — the target (`y`), the first element of the feature list. Used
+  for the ICL context; on test, metrics are computed over rows whose label is
+  present (non-NaN). **Required.**
+- **`SampleId` / `DocId`** — the separate id column described above. **Required.**
 - **`Num`** — numerical feature (normalized).
 - **`Categ` / `Categorical`** — categorical feature (encoded).
 - **`Weight`** — parsed but currently ignored.
-- **Anything else** (`Auxiliary`, `Text`, `GroupId`, …) and any position with no
-  `cd` line — **excluded** from the feature matrix. The parser never errors on
-  an unknown type.
+- **Anything else** (`Auxiliary`, `Text`, `GroupId`, …) after `Label` —
+  **excluded** from the feature matrix. The parser never errors on an unknown
+  feature type.
 
-Only `Num` + `Categ` positions form the matrix fed to the model, in `cd` order.
+Only `Num` + `Categ` columns form the matrix fed to the model, in `cd` order.
+`Label` and `SampleId`/`DocId` are required; the parser raises otherwise.
 
 ### `CONFIG.yaml`
 
