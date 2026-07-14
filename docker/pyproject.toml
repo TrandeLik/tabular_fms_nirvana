@@ -115,7 +115,7 @@ extend-select = ["RUF", "UP", "E501", "E731"]
 quote-style = "single"
 
 [tool.setuptools]
-packages = ["lib", "bin", "dev", "vendor"]
+packages = ["lib"]
 
 [tool.uv]
 default-groups = ["dev"]
