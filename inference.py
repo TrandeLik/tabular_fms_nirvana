@@ -53,13 +53,42 @@ class ContextEnsemble:
         max_context_size: int | None = None,
         seed: int = 0,
     ) -> None:
-        assert n_ensemble >= 1
+        if n_ensemble < 1:
+            raise ValueError(f'n_ensemble must be >= 1, got {n_ensemble}')
+        if x_context.ndim != 2:
+            raise ValueError(
+                f'x_context must be 2D (n_context, n_features), got shape '
+                f'{tuple(x_context.shape)}'
+            )
+        if x_context.shape[0] == 0:
+            raise ValueError('x_context is empty; the ICL context has no rows')
+        if y_context.shape[0] != x_context.shape[0]:
+            raise ValueError(
+                f'x_context has {x_context.shape[0]} rows but y_context has '
+                f'{y_context.shape[0]}; they must match'
+            )
+
         self.task_type = task_type
         self.device = x_context.device
         n_context, n_features = x_context.shape
         self.n_features = n_features
 
+        if max_context_size is not None and max_context_size < 1:
+            raise ValueError(
+                f'max_context_size must be >= 1, got {max_context_size}'
+            )
         resample = max_context_size is not None and n_context > max_context_size
+        if resample and task_type in (TaskType.BINCLASS, TaskType.MULTICLASS):
+            # Stratified subsampling needs at least one example per class in the
+            # kept set; fail early with a clear message rather than deep in
+            # sklearn.
+            n_classes = int(torch.unique(y_context).numel())
+            if max_context_size < n_classes:
+                raise ValueError(
+                    f'max_context_size={max_context_size} is smaller than the '
+                    f'number of classes ({n_classes}); cannot draw a stratified '
+                    f'context subsample'
+                )
         y_np = y_context.cpu().numpy()
 
         self.members: list[_Member] = []
@@ -162,8 +191,26 @@ def predict_batch(
         Classification: probabilities, shape (n_eval, n_classes).
         Regression: values, shape (n_eval,).
     """
+    if x_eval.ndim != 2:
+        raise ValueError(
+            f'x_eval must be 2D (n_eval, n_features), got shape {tuple(x_eval.shape)}'
+        )
+    if x_eval.shape[1] != ensemble.n_features:
+        raise ValueError(
+            f'x_eval has {x_eval.shape[1]} features but the context was built '
+            f'with {ensemble.n_features}'
+        )
+    if eval_chunk_size is not None and eval_chunk_size < 1:
+        raise ValueError(f'eval_chunk_size must be >= 1, got {eval_chunk_size}')
+
     task_type = ensemble.task_type
     n_eval = x_eval.shape[0]
+    if n_eval == 0:
+        # Nothing to predict; return an empty array with the right rank.
+        if task_type == TaskType.REGRESSION:
+            return np.empty((0,), dtype=np.float32)
+        return np.empty((0, 0), dtype=np.float32)
+
     initial = (
         _chunk_state[0]
         if _chunk_state
@@ -180,7 +227,8 @@ def predict_batch(
             out = out.exp()  # wrapper returns log-probs
         accum = out if accum is None else accum + out
 
-    assert accum is not None
+    if accum is None:  # pragma: no cover - guarded by n_ensemble >= 1
+        raise RuntimeError('ensemble produced no members')
     averaged = (accum / len(ensemble.members)).cpu().numpy()
     if _chunk_state is not None:
         # Only a genuine OOM (chunk shrank below the batch-capped start) should

@@ -38,6 +38,7 @@ _IMPUTE_STANDARDIZE_MIN = 'standardize_min'
 class FittedTransformers:
     """Fitted state + column layout needed to transform new batches."""
 
+    n_input_features: int  # expected width of the raw (cd-ordered) feature matrix
     num_cols: np.ndarray  # positions (within the cd-ordered feature matrix)
     cat_cols: np.ndarray
     num_transformer: object | None
@@ -75,11 +76,24 @@ def fit_transform_context(
         config: run config (normalization policies + seed).
     """
     raw_features = np.asarray(raw_features, dtype=np.float32)
+    if raw_features.ndim != 2:
+        raise ValueError(
+            f'context features must be a 2D array, got shape {raw_features.shape}'
+        )
+    if raw_features.shape[0] == 0:
+        raise ValueError('context is empty; cannot fit feature normalization')
+    if raw_features.shape[1] != cd_spec.n_features:
+        raise ValueError(
+            f'context has {raw_features.shape[1]} feature columns but cd.txt '
+            f'declares {cd_spec.n_features}'
+        )
+
     is_cat = np.asarray(cd_spec.feature_is_cat, dtype=bool)
     num_cols = np.flatnonzero(~is_cat)
     cat_cols = np.flatnonzero(is_cat)
 
     fitted = FittedTransformers(
+        n_input_features=raw_features.shape[1],
         num_cols=num_cols,
         cat_cols=cat_cols,
         num_transformer=None,
@@ -115,6 +129,15 @@ def transform_batch(
 ) -> np.ndarray:
     """Apply fitted transformers to a streamed batch (cd-ordered features)."""
     raw_features = np.asarray(raw_features, dtype=np.float32)
+    if raw_features.ndim != 2:
+        raise ValueError(
+            f'batch features must be a 2D array, got shape {raw_features.shape}'
+        )
+    if raw_features.shape[1] != fitted.n_input_features:
+        raise ValueError(
+            f'batch has {raw_features.shape[1]} feature columns but the fitted '
+            f'pipeline expects {fitted.n_input_features}'
+        )
     blocks: list[tuple[np.ndarray, np.ndarray]] = []
 
     if fitted.num_cols.size:

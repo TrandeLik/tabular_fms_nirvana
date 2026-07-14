@@ -63,6 +63,15 @@ class CdSpec:
     def has_label(self) -> bool:
         return self.label_idx is not None
 
+    @property
+    def max_index(self) -> int:
+        """Largest position referenced by any role (features/label/docid/weight)."""
+        indices = list(self.feature_indices)
+        for idx in (self.label_idx, self.docid_idx, self.weight_idx):
+            if idx is not None:
+                indices.append(idx)
+        return max(indices) if indices else -1
+
 
 def parse_cd(path: str | Path) -> CdSpec:
     """Parse a CatBoost ``cd`` file into a :class:`CdSpec`.
@@ -76,6 +85,7 @@ def parse_cd(path: str | Path) -> CdSpec:
         raise FileNotFoundError(f'Column-description file not found: {path}')
 
     spec = CdSpec()
+    seen_indices: dict[int, int] = {}  # index -> line number that claimed it
     for lineno, raw_line in enumerate(path.read_text().splitlines(), start=1):
         line = raw_line.split('#', 1)[0].strip()
         if not line:
@@ -96,6 +106,17 @@ def parse_cd(path: str | Path) -> CdSpec:
                 f'got {fields[0]!r}'
             ) from err
 
+        if index < 0:
+            raise ValueError(
+                f'{path}:{lineno}: column index must be non-negative, got {index}'
+            )
+        if index in seen_indices:
+            raise ValueError(
+                f'{path}:{lineno}: column index {index} is assigned a role more '
+                f'than once (first at line {seen_indices[index]})'
+            )
+        seen_indices[index] = lineno
+
         col_type = fields[1].lower()
         name = fields[2] if len(fields) >= 3 else ''
 
@@ -108,6 +129,8 @@ def parse_cd(path: str | Path) -> CdSpec:
                 raise ValueError(f'{path}:{lineno}: duplicate DocId/SampleId column')
             spec.docid_idx = index
         elif col_type in _WEIGHT:
+            if spec.weight_idx is not None:
+                raise ValueError(f'{path}:{lineno}: duplicate Weight column')
             spec.weight_idx = index  # parsed but currently unused
         elif col_type in _NUM:
             spec.num_indices.append(index)
@@ -124,6 +147,12 @@ def parse_cd(path: str | Path) -> CdSpec:
                 f'{path}:{lineno}: excluding column {index} '
                 f'with unhandled type {fields[1]!r}'
             )
+
+    if not spec.feature_indices:
+        raise ValueError(
+            f'{path}: no model features declared; the cd file must contain at '
+            f'least one Num or Categ column'
+        )
 
     logger.info(
         f'Parsed {path.name}: {spec.n_features} model features '

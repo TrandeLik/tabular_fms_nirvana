@@ -56,14 +56,44 @@ def _resolve_device(device_arg: str | None) -> torch.device:
         return torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     if device_arg == 'cpu':
         return torch.device('cpu')
-    return torch.device(
-        f'cuda:{device_arg}' if torch.cuda.is_available() else 'cpu'
-    )
+    # An explicit CUDA index was requested; refuse to silently fall back to CPU.
+    if not torch.cuda.is_available():
+        raise RuntimeError(
+            f'--device {device_arg} requests a GPU, but CUDA is not available. '
+            f'Pass --device cpu to run on CPU.'
+        )
+    try:
+        index = int(device_arg)
+    except ValueError as err:
+        raise ValueError(
+            f"--device must be 'cpu' or a CUDA index, got {device_arg!r}"
+        ) from err
+    if index < 0 or index >= torch.cuda.device_count():
+        raise ValueError(
+            f'--device {index} is out of range; {torch.cuda.device_count()} '
+            f'CUDA device(s) visible'
+        )
+    return torch.device(f'cuda:{index}')
 
 
 def _load_mr_table(name: str) -> dict[str, str]:
-    with open(name) as f:
-        return json.load(f)
+    path = Path(name)
+    if not path.exists():
+        raise FileNotFoundError(
+            f'MR table descriptor {name} not found in the working directory'
+        )
+    try:
+        mr = json.loads(path.read_text())
+    except json.JSONDecodeError as err:
+        raise ValueError(f'{name} is not valid JSON: {err}') from err
+    if not isinstance(mr, dict) or 'table' not in mr:
+        raise ValueError(
+            f'{name} must be a JSON object with at least a "table" key '
+            f'(and usually "cluster"), got {mr!r}'
+        )
+    if not mr['table']:
+        raise ValueError(f'{name} has an empty "table" value')
+    return mr
 
 
 def _download_context(
@@ -81,6 +111,8 @@ def _download_context(
             labels.append(batch['labels'])
     loader.reader.reader.close()
 
+    if not feats:
+        return np.empty((0, 0), dtype=np.float32), None
     x = np.concatenate(feats, axis=0)
     y = np.concatenate(labels, axis=0) if have_labels and labels else None
     return x, y
@@ -186,6 +218,10 @@ def _write_predictions(
 def main() -> None:
     # >>> Setup
     args = parse_args()
+    if not YT_TOKEN:
+        raise RuntimeError(
+            'YT_TOKEN environment variable is not set; it is required to access YT.'
+        )
     device = _resolve_device(args.device)
     logger.info(f'Device: {device}')
 
@@ -222,6 +258,11 @@ def main() -> None:
         config.batch_size,
     )
     raw_context, y_context_np = _download_context(context_loader)
+    if raw_context.shape[0] == 0:
+        raise ValueError(
+            f'Context table {context_mr["table"]!r} is empty; cannot build an '
+            f'ICL context.'
+        )
     if y_context_np is None:
         raise ValueError(
             'Context table has no Label column, but a label is required to '
@@ -302,6 +343,10 @@ def main() -> None:
         logger.info('Test table has no labels — writing predictions only.')
 
     # >>> Write predictions to YT
+    if not all_rows:
+        raise ValueError(
+            f'Test table {test_mr["table"]!r} produced no rows; nothing to write.'
+        )
     if args.debug:
         logger.info('Debug mode: skipping upload to YT.')
         return
