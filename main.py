@@ -183,7 +183,15 @@ def _to_output_rows(
         for k, v in zip(keys, preds.tolist()):
             rows.append({'key': _key(k), 'prediction': float(v)})
     elif task_type == TaskType.BINCLASS:
-        pos = preds[:, 1] if preds.ndim == 2 else preds
+        if preds.ndim != 2:
+            pos = preds
+        elif preds.shape[1] >= 2:
+            pos = preds[:, 1]
+        else:
+            # Context held a single class, so the model emitted an (N, 1)
+            # column; the positive class was never observed. Column 0 is
+            # P(the only class seen) — report its complement as P(positive).
+            pos = 1.0 - preds[:, 0]
         for k, p in zip(keys, pos.tolist()):
             rows.append(
                 {'key': _key(k), 'prediction': float(p), 'probabilities': [float(p)]}

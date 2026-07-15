@@ -73,6 +73,25 @@ class ContextEnsemble:
         n_context, n_features = x_context.shape
         self.n_features = n_features
 
+        if task_type in (TaskType.BINCLASS, TaskType.MULTICLASS):
+            # TabICL sizes its output width from the labels it sees, as
+            # max(label)+1 (see embedding.py). Log both the distinct classes
+            # present and that effective width so a degenerate context (e.g. a
+            # single class producing an (N, 1) prediction) is visible up front.
+            classes = torch.unique(y_context)
+            n_present = int(classes.numel())
+            output_width = int(y_context.max().item()) + 1
+            logger.info(
+                f'Context classes: {n_present} present '
+                f'({classes.cpu().tolist()}), model output width={output_width}'
+            )
+            if task_type == TaskType.BINCLASS and output_width < 2:
+                logger.warning(
+                    f'BINCLASS context has output width {output_width} (<2): only '
+                    f'classes {classes.cpu().tolist()} appear, so the positive '
+                    f'class is unobserved and predictions will be degenerate.'
+                )
+
         if max_context_size is not None and max_context_size < 1:
             raise ValueError(
                 f'max_context_size must be >= 1, got {max_context_size}'
