@@ -209,28 +209,42 @@ def _to_output_rows(
     return rows
 
 
-def _key(k: Any) -> int:
-    """Coerce a SampleId value to the Int64 output key.
+def _key(k: Any) -> int | str:
+    """Coerce a SampleId value to an output key, preserving its natural type.
 
-    Ids arrive from a dedicated YT column and are expected to be integers
-    (possibly as float/str); a non-integer id is a schema mismatch worth
-    surfacing rather than silently truncating.
+    Ids arrive from a dedicated YT column. They are commonly integers, but may
+    also be arbitrary **string** keys (e.g. resource paths like
+    ``'/users/.../feedback'``); both are valid and preserved as-is. Whole-valued
+    floats are narrowed to int; a genuinely fractional float is a schema
+    mismatch worth surfacing rather than silently truncating.
     """
     if isinstance(k, bool):
-        raise TypeError(f'SampleId must be an integer, got bool {k!r}')
+        raise TypeError(f'SampleId must be an int or string, got bool {k!r}')
     if isinstance(k, (int, np.integer)):
         return int(k)
     if isinstance(k, (float, np.floating)):
         if not float(k).is_integer():
-            raise ValueError(f'SampleId {k!r} is not an integer')
+            raise ValueError(f'SampleId {k!r} is a non-integer float')
         return int(k)
     if isinstance(k, (str, bytes)):
-        s = k.decode() if isinstance(k, bytes) else k
-        try:
-            return int(s)
-        except ValueError as err:
-            raise ValueError(f'SampleId {k!r} is not an integer key') from err
+        return k.decode() if isinstance(k, bytes) else k
     raise TypeError(f'Unsupported SampleId type {type(k).__name__}: {k!r}')
+
+
+def _key_column_type(rows: list[dict[str, Any]]):
+    """Pick the YT type for the ``key`` column from the actual keys.
+
+    All SampleIds in a table are expected to share a type. String keys -> String,
+    integer keys -> Int64. A mix is a schema inconsistency worth surfacing.
+    """
+    has_str = any(isinstance(r['key'], str) for r in rows)
+    has_int = any(isinstance(r['key'], int) for r in rows)
+    if has_str and has_int:
+        raise ValueError(
+            'SampleId keys mix string and integer types within one table; '
+            'the output key column requires a single type.'
+        )
+    return ti.String if has_str else ti.Int64
 
 
 def _write_predictions(
@@ -248,7 +262,7 @@ def _write_predictions(
 
     schema = (
         yt.schema.TableSchema()
-        .add_column('key', ti.Int64)
+        .add_column('key', _key_column_type(rows))
         .add_column('prediction', ti.Double)
         .add_column('probabilities', ti.Optional[ti.List[ti.Double]])
     )
