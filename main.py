@@ -321,22 +321,36 @@ def main() -> None:
             f'ICL context.'
         )
     # Only labeled rows can serve as ICL support; drop rows with no target
-    # (NaN, or the -9999 sentinel for classification).
+    # (NaN, or the -9999 sentinel for classification). Normalization is fit
+    # either on all downloaded rows (preprocess_before_target_filter=True) or
+    # on labeled rows only (False); in both cases the ICL context keeps
+    # labeled rows only.
     labeled = _labeled_mask(y_context_np, task_type)
     n_dropped = int((~labeled).sum())
-    if n_dropped:
-        logger.warning(f'Dropping {n_dropped} unlabeled context rows (no target)')
-        raw_context = raw_context[labeled]
-        y_context_np = y_context_np[labeled]
-    if raw_context.shape[0] == 0:
+    if not labeled.any():
         raise ValueError(
             f'Context table {context_mr["table"]!r} has no labeled rows; cannot '
             f'build an ICL context.'
         )
-    logger.info(f'Context: {raw_context.shape[0]} rows, {raw_context.shape[1]} feats')
+    logger.info(
+        f'Context: {int(labeled.sum())} rows, {raw_context.shape[1]} feats'
+    )
 
     # >>> Fit normalization on the context, move to device
-    x_context_np, fitted = fit_transform_context(raw_context, cd_spec, config)
+    if config.preprocess_before_target_filter:
+        # Fit on all rows (including unlabeled), then drop unlabeled ones.
+        x_context_np, fitted = fit_transform_context(raw_context, cd_spec, config)
+        if n_dropped:
+            logger.warning(f'Dropping {n_dropped} unlabeled context rows (no target)')
+            x_context_np = x_context_np[labeled]
+            y_context_np = y_context_np[labeled]
+    else:
+        # Drop unlabeled rows first, then fit on the labeled rows only.
+        if n_dropped:
+            logger.warning(f'Dropping {n_dropped} unlabeled context rows (no target)')
+            raw_context = raw_context[labeled]
+            y_context_np = y_context_np[labeled]
+        x_context_np, fitted = fit_transform_context(raw_context, cd_spec, config)
     x_context = torch.from_numpy(x_context_np).to(device)
     if task_type == TaskType.REGRESSION:
         y_context = torch.from_numpy(y_context_np.astype(np.float32)).to(device)

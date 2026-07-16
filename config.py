@@ -47,6 +47,12 @@ class Config:
     cat_policy: str | None = 'ordinal'
     # Imputation for numerical NaNs: None | 'basic' | 'standardize_min'.
     impute_strategy: str | None = 'basic'
+    # Whether feature normalization is fit before or after target filtering.
+    # If True, statistics are fit on ALL downloaded context rows (including
+    # rows later dropped for having no target); if False (default), they are
+    # fit only on the target-labeled rows. Either way the ICL context keeps
+    # labeled rows only.
+    preprocess_before_target_filter: bool = False
 
     # >>> Inference
     seed: int = 0
@@ -102,6 +108,11 @@ class Config:
         _positive_int('n_ensemble', self.n_ensemble)
         if not isinstance(self.seed, int) or isinstance(self.seed, bool):
             raise ValueError(f'config.seed must be an integer, got {self.seed!r}')
+        if not isinstance(self.preprocess_before_target_filter, bool):
+            raise TypeError(
+                'config.preprocess_before_target_filter must be a bool, got '
+                f'{type(self.preprocess_before_target_filter).__name__}'
+            )
         if self.max_context_size is not None:
             _positive_int('max_context_size', self.max_context_size)
         if self.eval_chunk_size is not None:
